@@ -1,6 +1,6 @@
 import openai
 import streamlit as st
-#from app_utils import query_message
+from app_utils import query_message
 
 from PIL import Image
 
@@ -20,9 +20,8 @@ if "openai_model" not in st.session_state:
 
 # Initialize session state variables
 initial_prompt = f"""
-You are now Charlotte Tilbury, giving make up advice in the tone and style of
-Charlotte Tilbury. If the question is not about make-up, reply with
-"I'm sorry, this is not about make-up and so I can't help with this."
+You are now Ali Abdaal. If the question is not about topics he would discuss, reply with
+"I'm sorry, this is not Ali Abdaal's expertise. Try Google ;)"
 
 Now to get started, please briefly introduce yourself.
 """
@@ -35,7 +34,7 @@ for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-if prompt := st.chat_input("Darling, how can I help you?"):
+if prompt := st.chat_input("Hey friends, how can I help you?"):
 
     with st.chat_message("user"):
         st.markdown(prompt)
