@@ -1,12 +1,21 @@
 import pandas as pd
 from openai import OpenAI
+import openai
 import os
 import tiktoken
 from scipy import spatial  # for calculating vector similarities for search
+import ast  # for converting embeddings saved as strings back to arrays
+
+openai.api_key_path = ".env"
+
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 GPT_MODEL = "gpt-3.5-turbo"
 df = pd.read_csv("ali_abdaals_articles.csv")
+
+# convert embeddings from CSV str type back to list type
+df['embedding'] = df['embedding'].apply(ast.literal_eval)
+
 # client = client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", ))
 
 
@@ -34,7 +43,7 @@ def strings_ranked_by_relatedness(
     top_n: int = 200
 ) -> tuple[list[str], list[float]]:
     """Returns a list of strings and relatednesses, sorted from most related to least."""
-    query_embedding_response = OpenAI.embeddings.create(
+    query_embedding_response = OpenAI().embeddings.create(
         model=EMBEDDING_MODEL,
         input=query,
     )
@@ -49,9 +58,9 @@ def strings_ranked_by_relatedness(
 
 def query_message(
     query: str,
-    df: pd.DataFrame,
-    model: str,
-    token_budget: int
+    df: pd.DataFrame = df,
+    model: str = GPT_MODEL,
+    token_budget: int = 2000
 ) -> str:
     """Return a message for GPT, with relevant source texts pulled from a dataframe."""
     strings, relatednesses = strings_ranked_by_relatedness(query, df)

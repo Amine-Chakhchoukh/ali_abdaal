@@ -6,8 +6,8 @@ from PIL import Image
 
 st.set_page_config(page_title="Ali Abdaal Chatbot Demo", page_icon='👨‍💻')
 
-image = Image.open('aliabdaal-logo.jpg')
-st.image(image, width=300)
+# image = Image.open('aliabdaal-logo.jpg')
+# st.image(image, width=300)
 
 st.title("Ali Abdaal Chatbot Demo")
 
